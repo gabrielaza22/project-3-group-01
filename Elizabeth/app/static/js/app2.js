@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function() {
     let width = 600;
     let height = 600;
@@ -30,9 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             // Process data
-            let root = d3.hierarchy(data)
-                .sum(d => d.value)
-                .sort((a, b) => b.value - a.value);
+            let root = d3.hierarchy(data.Sunburst_data[0]) // Assuming the data is in a list with a single item
+                .sum(d => d.species_count)  // Make sure this matches your data's structure
+                .sort((a, b) => b.species_count - a.species_count);
 
             // Compute the layout
             partition(root);

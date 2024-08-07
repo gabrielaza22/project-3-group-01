@@ -21,7 +21,7 @@ class SQLHelper():
     # Database Queries
     #################################################
 
-# @app.route('/top_parks', methods=['GET'])
+
 def get_top_parks(self):
     query = """
         SELECT
@@ -47,4 +47,4 @@ def get_top_parks(self):
 
     df = pd.read_sql(query, con=self.engine, params={'status': 'Endangered'})
     data = df.to_dict(orient="records")
-    return data
+    return (data)
