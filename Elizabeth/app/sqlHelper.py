@@ -23,10 +23,12 @@ class SQLHelper():
 
 # @app.route('/top_parks', methods=['GET'])
 def get_top_parks(self):
-    query = text("""
+    query = """
         SELECT
             p."Park Name",
-            COUNT(s."Common Names") AS species_count
+            COUNT(s."Scientific Name") AS species_count,
+            s."Category",
+            p."State"
         FROM
             Parks p
         JOIN
@@ -34,13 +36,14 @@ def get_top_parks(self):
         ON
             p."Park Name" = s."Park Name"
         WHERE
-            s."Conservation Status" = :status
+            s."Conservation Status" = 'Endangered'
         GROUP BY
-            p."Park Name"
+            p."Park Name",
+            s."Category"
         ORDER BY
             species_count DESC
         LIMIT 10;
-    """)
+    """
 
     df = pd.read_sql(query, con=self.engine, params={'status': 'Endangered'})
     data = df.to_dict(orient="records")

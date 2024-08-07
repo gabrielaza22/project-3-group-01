@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template
-# import pandas as pd
-# import numpy as np
+import pandas as pd
+import numpy as np
 from sqlHelper import SQLHelper
 
 #################################################
@@ -14,7 +14,24 @@ sql = SQLHelper()
 #################################################
 
 # HTML ROUTES
-@app.route('/top_parks', methods=['GET'])
+@app.route("/")
+def index():
+    return render_template("home.html")
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+@app.route("/map")
+def map():
+    return render_template("map.html")
+
+@app.route("/about_us")
+def about_us():
+    return render_template("about_us.html")
+
+
+@app.route("/api/v1.0/get_dashboard")
 def get_top_parks(list):
     # Obtain the data from get_top_parks from SQLHelper
     Sunburst_data = sql.get_sunburst(list)
@@ -23,4 +40,7 @@ def get_top_parks(list):
         "Sunburst_data": Sunburst_data
     }
     return jsonify(data)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
