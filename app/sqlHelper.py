@@ -124,10 +124,10 @@ class SQLHelper():
     def get_map(self, user_state, user_status):
 
         # switch on user_state
-        if user_state == 'All':
-            where_clause = "and 1=1"
+        if user_state <> 'All':
+             where_clause = f"State = {user_state}"
         else:
-            where_clause = f"and state = '{user_state}'"
+            where_clause = ""
 
         # build the query
         query = f"""
@@ -140,7 +140,6 @@ class SQLHelper():
             FROM
                 combined
             WHERE
-                State = {user_state}
                 {where_clause}
         """
 
