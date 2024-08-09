@@ -19,17 +19,17 @@ function createMap(data) {
   let markers = L.markerClusterGroup();
   let heatArray = [];
 
-  for (let i = 0; i < data.length; i++){
-    let row = data[i];
+  for (let i = 0; i < map_data.length; i++){
+    let row = data.map_data[i];
     let latitude = row.latitude;
     let longitude = row.longitude;
 
-    // extract coord
+    // extract coordinates
     let point = [latitude, longitude];
 
     // make marker
     let marker = L.marker(point);
-    let popup = `<h1>${row.full_name}</h1><hr><h2>${row.region}</h2><hr><h3>${row.launch_attempts} | ${row.launch_successes}</h3>`;
+    let popup = `<h3>${row["Park Name"]}</h3><hr><h3>${row.State}</h3><hr><h4>${row["Conservation Status"]}</h4>`;
     marker.bindPopup(popup);
     markers.addLayer(marker);
 
@@ -78,14 +78,12 @@ function createMap(data) {
 
 function do_work() {
   // extract user input
-  let min_launches = d3.select("#launch_filter").property("value");
-  min_launches = parseInt(min_launches);
-  let region = d3.select("#region_filter").property("value");
+  let user_state = d3.select("#state_filter").property("value");
+  let user_status = d3.select("#cons_filter").property("value");
 
   // We need to make a request to the API
-  let url = `/api/v1.0/get_map/${min_launches}/${region}`;
+  let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
 
-  // make TWO requests
   d3.json(url).then(function (data) {
     createMap(data);
   });

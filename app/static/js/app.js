@@ -22,8 +22,7 @@ function do_work() {
     make_sunburst(data.sunburst_data);
     make_bar(data.bar_data);
     make_bubble(data.bubble_data);
-    make_table(data.table_data);
-    make_map(data.map_data)
+    make_table(data.table_data)
   });
 }
 
