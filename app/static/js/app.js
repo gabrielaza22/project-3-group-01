@@ -1,12 +1,22 @@
 function do_work() {
+
   // extract user input
   let user_state = d3.select("#state_filter").property("value");
-  
   let user_status = d3.select("#cons_filter").property("value");
 
   // We need to make a request to the API
-  // let db = ('Data_engineering_eda/national_parks.sqlite');
-  d3.json(db).then(function (data) {
+  let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
+  d3.json(url).then(function (data) {
+
+      // filter by user input
+      let filtered_data = data.filter(x => x.State === user_state);
+
+      if (user_state !== "All") {
+        filtered_data = filtered_data.filter(x => x.State === user_state);
+      }
+      if (user_status !== "All") {
+        filtered_data = filtered_data.filter(x => x["Conservation Status"] === user_status);
+      }
 
     // create the graphs
     make_bar(data.bar_data);

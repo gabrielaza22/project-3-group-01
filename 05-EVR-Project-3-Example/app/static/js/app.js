@@ -1,12 +1,19 @@
 function do_work() {
-  // extract user input
-  let min_launches = d3.select("#launch_filter").property("value");
-  min_launches = parseInt(min_launches);
-  let region = d3.select("#region_filter").property("value");
 
   // We need to make a request to the API
   let url = `/api/v1.0/get_dashboard/${min_launches}/${region}`;
   d3.json(url).then(function (data) {
+
+    // extract user input
+    let min_launches = d3.select("#launch_filter").property("value");
+    min_launches = parseInt(min_launches);
+    let region = d3.select("#region_filter").property("value");
+
+    // filter by user input
+    let filtered_data = data.filter(x => x.launch_attempts >= min_launches);
+    if (region !== "All") {
+      filtered_data = filtered_data.filter(x => x.region === region);
+    }
 
     // create the graphs
     make_bar(data.bar_data);

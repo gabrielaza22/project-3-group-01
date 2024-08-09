@@ -14,7 +14,7 @@ sql = SQLHelper()
 #################################################
 
 # HTML ROUTES
-@app.route("/")
+@app.route("/api/v1.0/")
 def index():
     return render_template("home.html")
 
@@ -29,45 +29,34 @@ def get_sunburst_data():
     }
     return jsonify(data)
 
-@app.route("/dashboard")
-def dashboard():
+# Unsure if we need the filters in the api call
+@app.route("/api/v1.0/get_dashboard/<user_state>/<user_status>")
+def get_dashboard(user_state, user_status):
+
+    bar_data = sql.get_bar(user_state, user_status)
+    bubble_data = sql.get_bubble(user_state, user_status)
+    table_data = sql.get_table(user_state, user_status)
+
+    data = {
+        "bar_data": bar_data,
+        "pie_data": pie_data,
+        "table_data": table_data
+    }
     return render_template("dashboard.html")
 
-@app.route("/map")
-def map():
+@app.route("/api/v1.0/get_map/<user_state>/<user_status>")
+def get_map(user_state, user_status):
+    map_data = sql.get_map(user_state, user_status)
+
     return render_template("map.html")
 
-@app.route("/about_us")
+@app.route("/api/v1.0/about_us")
 def about_us():
     return render_template("about_us.html")
 
-@app.route("/resources")
+@app.route("/api/v1.0/resources")
 def resources():
     return render_template("resources.html")
-
-# # SQL Queries
-# @app.route("/api/v1.0/get_dashboard/<min_attempts>/<region>")
-# def get_dashboard(min_attempts, region):
-#     min_attempts = int(min_attempts) # cast to int
-
-#     bar_data = sql.get_bar(min_attempts, region)
-#     pie_data = sql.get_pie(min_attempts, region)
-#     table_data = sql.get_table(min_attempts, region)
-
-#     data = {
-#         "bar_data": bar_data,
-#         "pie_data": pie_data,
-#         "table_data": table_data
-#     }
-#     return(jsonify(data))
-
-# @app.route("/api/v1.0/get_map/<min_attempts>/<region>")
-# def get_map(min_attempts, region):
-#     min_attempts = int(min_attempts) # cast to int
-#     map_data = sql.get_map(min_attempts, region)
-
-#     return(jsonify(map_data))
-
 
 
 # Run the App

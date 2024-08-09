@@ -36,17 +36,15 @@ class SQLHelper():
     # USING RAW SQL
     def get_bar(self, user_state, user_status):
 
-        # switch on user_state
-        if user_state == 'All':
-            where_clause = "and 1=1"
-        else:
-            where_clause = f"and state = '{user_state}'"
+        # Initialize WHERE clauses
+
+        # switch on user state
+        if user_state != 'All':
+            state_clause = f"State = '{user_state}'"
 
         # switch on user conservation status
-        if user_status == 'All':
-            where_clause = "and 1=1"
-        else:
-            where_clause = f"and 'Conservation Status' = '{user_status}'"
+        if user_status != 'All':
+            status_clause = f"Conservation Status = '{user_status}'"
 
         # build the query
         query = f"""
@@ -61,8 +59,9 @@ class SQLHelper():
             FROM
                 combined
             WHERE
-                State = {user_state}
-                {where_clause}
+                1=1
+                {f"AND {state_clause}" if state_clause else ""}
+                {f"AND {status_clause}" if status_clause else ""}
             GROUP BY 
                 "Park Name", "State", "Conservation Status"
             ORDER BY
@@ -123,11 +122,15 @@ class SQLHelper():
 
     def get_map(self, user_state, user_status):
 
-        # switch on user_state
-        if user_state <> 'All':
-             where_clause = f"State = {user_state}"
-        else:
-            where_clause = ""
+        # Initialize WHERE clauses
+
+        # switch on user state
+        if user_state != 'All':
+            state_clause = f"State = '{user_state}'"
+
+        # switch on user conservation status
+        if user_status != 'All':
+            status_clause = f"Conservation Status = '{user_status}'"
 
         # build the query
         query = f"""
@@ -140,7 +143,9 @@ class SQLHelper():
             FROM
                 combined
             WHERE
-                {where_clause}
+                1=1
+                {f"AND {state_clause}" if state_clause else ""}
+                {f"AND {status_clause}" if status_clause else ""}
         """
 
         df = pd.read_sql(text(query), con = self.engine)
