@@ -121,7 +121,7 @@ class SQLHelper():
         data = df.to_dict(orient="records")
         return(data)
 
-    def get_map(self, user_state, user_status):
+    def get_map(self, user_state):
 
         # switch on user_state
         if user_state == 'All':

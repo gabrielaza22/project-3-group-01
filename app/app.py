@@ -18,6 +18,17 @@ sql = SQLHelper()
 def index():
     return render_template("home.html")
 
+@app.route('/api/v1.0/get_sunburst_data')
+def get_sunburst_data():
+    # Obtain the data from get_sunburst from SQLHelper
+    sunburst_data = sql.get_sunburst()
+    # print("Fetched data:", sunburst_data)  # Print the data to the console
+
+    data = {
+        "Sunburst_data": sunburst_data
+    }
+    return jsonify(data)
+
 @app.route("/dashboard")
 def dashboard():
     return render_template("dashboard.html")
@@ -31,7 +42,7 @@ def about_us():
     return render_template("about_us.html")
 
 @app.route("/resources")
-def about_us():
+def resources():
     return render_template("resources.html")
 
 # # SQL Queries
