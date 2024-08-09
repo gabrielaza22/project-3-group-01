@@ -2,7 +2,6 @@ import sqlalchemy
 # from sqlalchemy.ext.automap import automap_base
 # from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, func
-import datetime
 
 import pandas as pd
 import numpy as np
@@ -47,7 +46,7 @@ class SQLHelper():
             status_clause = f"Conservation Status = '{user_status}'"
 
         # build the query
-        query = f"""
+        bar_query = f"""
             SELECT
                 "Park Name",
                 Latitude,
@@ -68,9 +67,9 @@ class SQLHelper():
                 Acres DESC
             """
 
-        df = pd.read_sql(text(query), con = self.engine)
-        data = df.to_dict(orient="records")
-        return(data)
+        df = pd.read_sql(text(bar_query), con = self.engine)
+        bar_data = df.to_dict(orient="records")
+        return(bar_data)
 
     def get_sunburst(self):
         
@@ -97,8 +96,8 @@ class SQLHelper():
             """
 
         df = pd.read_sql(sunburst_query, con=self.engine)
-        data = df.to_dict(orient="records")
-        return data
+        sunburst_data = df.to_dict(orient="records")
+        return sunburst_data
 
     def get_bubble(self):
 
@@ -117,8 +116,46 @@ class SQLHelper():
             """
 
         df = pd.read_sql(text(bubble_query), con = self.engine)
-        data = df.to_dict(orient="records")
-        return(data)
+        bubble_data = df.to_dict(orient="records")
+        return(bubble_data)
+    
+    def get_table(self, user_state, user_status):
+
+        # Initialize WHERE clauses
+
+        # switch on user state
+        if user_state != 'All':
+            state_clause = f"State = '{user_state}'"
+
+        # switch on user conservation status
+        if user_status != 'All':
+            status_clause = f"Conservation Status = '{user_status}'"
+
+        # build the query
+        bar_query = f"""
+            SELECT
+                "Park Name",
+                Latitude,
+                Longitude,
+                "Conservation Status",
+                COUNT ("Conservation Status") AS "Species Count",
+                State,
+                Acres
+            FROM
+                combined
+            WHERE
+                1=1
+                {f"AND {state_clause}" if state_clause else ""}
+                {f"AND {status_clause}" if status_clause else ""}
+            GROUP BY 
+                "Park Name", "State", "Conservation Status"
+            ORDER BY
+                Acres DESC
+            """
+
+        df = pd.read_sql(text(bar_query), con = self.engine)
+        table_data = df.to_dict(orient="records")
+        return(table_data)
 
     def get_map(self, user_state, user_status):
 
@@ -133,7 +170,7 @@ class SQLHelper():
             status_clause = f"Conservation Status = '{user_status}'"
 
         # build the query
-        query = f"""
+        map_query = f"""
             SELECT
                 "Park Name",
                 State,
@@ -148,6 +185,6 @@ class SQLHelper():
                 {f"AND {status_clause}" if status_clause else ""}
         """
 
-        df = pd.read_sql(text(query), con = self.engine)
-        data = df.to_dict(orient="records")
-        return(data)
+        df = pd.read_sql(text(map_query), con = self.engine)
+        map_data = df.to_dict(orient="records")
+        return(map_data)

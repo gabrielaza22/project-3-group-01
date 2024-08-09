@@ -14,14 +14,14 @@ sql = SQLHelper()
 #################################################
 
 # HTML ROUTES
-@app.route("/api/v1.0/")
+@app.route("/")
 def index():
-    return render_template("home.html")
+    return render_template("index.html")
 
 @app.route('/api/v1.0/get_sunburst_data')
 def get_sunburst_data():
     # Obtain the data from get_sunburst from SQLHelper
-    sunburst_data = sql.get_sunburst()
+    sunburst_data = sql.get_sunburst_data()
     # print("Fetched data:", sunburst_data)  # Print the data to the console
 
     data = {
@@ -30,31 +30,31 @@ def get_sunburst_data():
     return jsonify(data)
 
 # Unsure if we need the filters in the api call
-@app.route("/api/v1.0/get_dashboard/<user_state>/<user_status>")
+@app.route("/api/v1.0/dashboard")
 def get_dashboard(user_state, user_status):
 
-    bar_data = sql.get_bar(user_state, user_status)
-    bubble_data = sql.get_bubble(user_state, user_status)
-    table_data = sql.get_table(user_state, user_status)
+    bar_data = sql.get_bar_data(user_state, user_status)
+    bubble_data = sql.get_bubble_data(user_state, user_status)
+    table_data = sql.get_table_data(user_state, user_status)
 
     data = {
         "bar_data": bar_data,
-        "pie_data": pie_data,
+        "bubble_data": bubble_data,
         "table_data": table_data
     }
-    return render_template("dashboard.html")
+    return jsonify(data)
 
-@app.route("/api/v1.0/get_map/<user_state>/<user_status>")
+@app.route("/api/v1.0/map/<user_state>/<user_status>")
 def get_map(user_state, user_status):
-    map_data = sql.get_map(user_state, user_status)
+    map_data = sql.get_map_data(user_state, user_status)
 
-    return render_template("map.html")
+    return jsonify(map_data)
 
-@app.route("/api/v1.0/about_us")
+@app.route("/about_us")
 def about_us():
     return render_template("about_us.html")
 
-@app.route("/api/v1.0/resources")
+@app.route("/resources")
 def resources():
     return render_template("resources.html")
 
