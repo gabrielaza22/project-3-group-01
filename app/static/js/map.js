@@ -1,7 +1,3 @@
-// GOAL 1
-// Can I render a basic base map? - Set up Leaflet correctly
-// Can we fetch the data that we need to plot?
-
 
 function createMap(data) {
   // STEP 1: Init the Base Layers
@@ -19,8 +15,8 @@ function createMap(data) {
   let markers = L.markerClusterGroup();
   let heatArray = [];
 
-  for (let i = 0; i < map_data.length; i++){
-    let row = data.map_data[i];
+  for (let i = 0; i < data.length; i++){
+    let row = data[i];
     let latitude = row.latitude;
     let longitude = row.longitude;
 
@@ -40,7 +36,7 @@ function createMap(data) {
   // create layer
   let heatLayer = L.heatLayer(heatArray, {
     radius: 25,
-    blur: 20
+    blur: 10
   });
 
   // Step 3: BUILD the Layer Controls
@@ -65,8 +61,8 @@ function createMap(data) {
   d3.select("#map-container").html("<div id='map'></div>");
 
   let myMap = L.map("map", {
-    center: [40.7128, -74.0059],
-    zoom: 5,
+    center: [39.50, -98.35],
+    zoom: 3,
     layers: [street, markers]
   });
 
@@ -76,20 +72,45 @@ function createMap(data) {
 
 }
 
-function do_work() {
+function map_parks() {
   // extract user input
   let user_state = d3.select("#state_filter").property("value");
   let user_status = d3.select("#cons_filter").property("value");
 
   // We need to make a request to the API
-  let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
+  let url = `/api/v1.0/get_map/${user_state}/${user_status}`;
 
   d3.json(url).then(function (data) {
     createMap(data);
   });
 }
 
-// event listener for CLICK on Button
-d3.select("#filter").on("click", do_work);
+// EVENT LISTENERS
 
-do_work();
+// Event listener for the dropdown selection change for State
+d3.select("#state_filter").on("change", function() {
+  user_state = d3.select(this).property("value");
+});
+
+// Event listener for the dropdown selection change for Conservation Status
+d3.select("#cons_filter").on("change", function() {
+  user_status = d3.select(this).property("value");
+});
+
+// Event listener for the button click
+d3.select("#filter").on("click", function() {
+  console.log(`Filter Results button clicked: State = ${user_state} and Conservation Status = ${user_status}`);
+  map_parks();
+});
+
+
+// INITIAL PAGE LOAD
+
+// Function to set default values and trigger do_work() on page load
+function initializePage() {
+  // Set default values for the dropdowns
+  d3.select("#state_filter").property("value", "All");
+  d3.select("#cons_filter").property("value", "All");
+
+  map_parks();
+}

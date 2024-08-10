@@ -34,27 +34,34 @@ def about_us():
 def resources():
     return render_template("resources.html")
 
-### SQL Queries
+### SQL Queries ###
 
-@app.route("/api/v1.0/dashboard")
+@app.route("/api/v1.0/get_dashboard/<user_state>/<user_status>")
 def get_dashboard(user_state, user_status):
 
-    bar_data = sql.get_bar_data(user_state, user_status)
-    bubble_data = sql.get_bubble_data()
-    table_data = sql.get_table_data(user_state, user_status)
+    try:
 
-    data = {
-        "bar_data": bar_data,
-        "bubble_data": bubble_data,
-        "table_data": table_data
-    }
-    return jsonify(data)
+        # bar_data = sql.get_bar_data(user_state, user_status)
+        bubble_data = sql.get_bubble_data(user_state, user_status)
+        # table_data = sql.get_table_data(user_state, user_status)
 
-@app.route("/api/v1.0/map/<user_state>/<user_status>")
+        data = {
+            # "bar_data": bar_data,
+            "bubble_data": bubble_data,
+            # "table_data": table_data
+        }
+        return(jsonify(data))
+ 
+    except Exception as e:
+        # Log the error
+        app.logger.error(f"Error in get_dashboard: {e}")
+        return jsonify({"error": "Internal server error"}), 500
+
+@app.route("/api/v1.0/get_map/<user_state>/<user_status>")
 def get_map(user_state, user_status):
     map_data = sql.get_map_data(user_state, user_status)
 
-    return jsonify(map_data)
+    return(jsonify(map_data))
 
 # @app.route('/api/v1.0/get_sunburst_data')
 # def get_sunburst_data():
@@ -70,65 +77,3 @@ def get_map(user_state, user_status):
 # Run the App
 if __name__ == '__main__':
     app.run(debug=True)
-
-# from flask import Flask, jsonify, render_template, request, Response
-# import json
-# import logging
-# from sqlHelper import SQLHelper
-
-# app = Flask(__name__)
-# sql = SQLHelper()
-
-# logging.basicConfig(level=logging.INFO)
-
-# @app.route("/")
-# def index():
-#     return render_template("index.html")
-
-# @app.route('/api/v1.0/get_sunburst_data')
-# def get_sunburst_data():
-#     try:
-#         sunburst_data = sql.get_sunburst_data()
-#         return jsonify(sunburst_data)
-#     except Exception as e:
-#         logging.error(f"Error fetching sunburst data: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
-
-# @app.route("/api/v1.0/dashboard")
-# def get_dashboard():
-#     user_state = request.args.get('user_state', default='default_state')
-#     user_status = request.args.get('user_status', default='default_status')
-    
-#     try:
-#         bar_data = sql.get_bar_data(user_state, user_status)
-#         bubble_data = sql.get_bubble_data(user_state, user_status)
-#         table_data = sql.get_table_data(user_state, user_status)
-#         data = {
-#             "bar_data": bar_data,
-#             "bubble_data": bubble_data,
-#             "table_data": table_data
-#         }
-#         return jsonify(data)
-#     except Exception as e:
-#         logging.error(f"Error fetching dashboard data: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
-
-# @app.route("/api/v1.0/map/<user_state>/<user_status>")
-# def get_map(user_state, user_status):
-#     try:
-#         map_data = sql.get_map_data(user_state, user_status)
-#         return jsonify(map_data)
-#     except Exception as e:
-#         logging.error(f"Error fetching map data: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
-
-# @app.route("/about_us")
-# def about_us():
-#     return render_template("about_us.html")
-
-# @app.route("/resources")
-# def resources():
-#     return render_template("resources.html")
-
-# if __name__ == '__main__':
-#     app.run(debug=True)

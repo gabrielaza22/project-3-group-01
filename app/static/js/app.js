@@ -1,10 +1,11 @@
+
 function do_work() {
 
   // extract user input
   let user_state = d3.select("#state_filter").property("value");
   let user_status = d3.select("#cons_filter").property("value");
 
-  // We need to make a request to the API
+  // make a request to the API
   let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
   d3.json(url).then(function (data) {
 
@@ -26,16 +27,18 @@ function do_work() {
   });
 }
 
-function make_table(data) {
+// CREATE VISUALIZATIONS 
+
+function make_table(table_data) {
   // select table
   let table = d3.select("#data_table");
   let table_body = table.select("tbody");
   table_body.html(""); // destroy any existing rows
 
   // create table
-  for (let i = 0; i < data.table_data.length; i++){
+  for (let i = 0; i < table_data.length; i++){
     // get data row
-    let data_row = data.table_data[i];
+    let data_row = table_data[i];
 
     // creates new row in the table
     let row = table_body.append("tr");
@@ -49,9 +52,9 @@ function make_table(data) {
   }
 }
 
-// Define the data for the plot
-function get_bubble_data(bubble_data) {
-  let data = [{
+
+function make_bubble(filtered_data) {
+  let bubble_chart_data = [{
     x: bubble_data["Category"],
     y: bubble_data["NumberOfSpecies"],
     type: 'violin',
@@ -65,18 +68,19 @@ function get_bubble_data(bubble_data) {
     width: 1200
   };
   // Plot the chart using Plotly
-  Plotly.newPlot('yourDivId', data, layout);
+  Plotly.newPlot('yourDivId', bubble_chart_data, layout);
 }
 
-function make_bar(data) {
+
+function make_bar(bar_data) {
 
   // extract the x & y values for our bar chart
-  let bar_x = data.bar_data.map(x => x["Park Name"]);
-  let bar_text = data.bar_data.map(x => x["Park Name"]);
-  let bar_y1 = data.bar_data.map(x => x.Size);
-  let bar_y2 = data.bar_data.map(x => x["Species Count"]);
+  let bar_x = bar_data.map(x => x["Park Name"]);
+  let bar_text = bar_data.map(x => x["Park Name"]);
+  let bar_y1 = bar_data.map(x => x.Size);
+  let bar_y2 = bar_data.map(x => x["Species Count"]);
 
-  // Trace1 for the Launch Attempts
+  // Trace1 for the National Parks
   let trace1 = {
     x: bar_x,
     y: bar_y1,
@@ -88,7 +92,7 @@ function make_bar(data) {
     name: "National Park"
   };
 
-  // Trace 2 for the Launch Successes
+  // Trace 2 for the Species Breakdown
   let trace2 = {
     x: bar_x,
     y: bar_y2,
@@ -122,108 +126,40 @@ function make_bar(data) {
 
 }
 
-// event listener for CLICK on Button
-d3.select("#filter").on("click", do_work);
+// EVENT LISTENERS
 
-// on page load, don't wait for the click to make the graph, use default
-do_work();
+// Event listener for the dropdown selection change for State
+d3.select("#state_filter").on("change", function() {
+  user_state = d3.select(this).property("value");
+});
 
-////////////////////////////////////////////////////
+// Event listener for the dropdown selection change for Conservation Status
+d3.select("#cons_filter").on("change", function() {
+  user_status = d3.select(this).property("value");
+});
 
-// function do_work() {
-//   // Extract user input
-//   let user_state = d3.select("#state_filter").property("value");
-//   let user_status = d3.select("#cons_filter").property("value");
-  
-//   // Construct the URL with query parameters
-//   let url = `/api/v1.0/dashboard?user_state=${user_state}&user_status=${user_status}`;
-  
-//   d3.json(url).then(function (data) {
-//     // Create the graphs and table
-//     make_bar(data.bar_data);
-//     make_bubble(data.bubble_data);
-//     make_table(data.table_data);
-//   }).catch(function (error) {
-//     console.error('Error fetching data:', error);
-//   });
-// }
+// Event listener for the button click
+d3.select("#filter").on("click", function() {
+  console.log(`Filter Results button clicked: State = ${user_state} and Conservation Status = ${user_status}`);
+  do_work();
+});
 
-// function make_table(table_data) {
-//   // Select table
-//   let table = d3.select("#data_table");
-//   let table_body = table.select("tbody");
-//   table_body.html(""); // Destroy any existing rows
-  
-//   // Create table
-//   table_data.forEach(function(data_row) {
-//     // Create a new row in the table
-//     let row = table_body.append("tr");
-//     row.append("td").text(data_row.State);
-//     row.append("td").text(data_row["Park Name"]);
-//     row.append("td").text(data_row.Size);
-//     row.append("td").text(data_row.Latitude);
-//     row.append("td").text(data_row.Longitude);
-//     row.append("td").text(data_row["Conservation Status"]);
-//     row.append("td").text(data_row["Species Count"]);
-//   });
-// }
 
-// function make_bar(bar_data) {
-//   // Extract the x & y values for our bar chart
-//   let bar_x = bar_data.map(x => x["Park Name"]);
-//   let bar_text = bar_data.map(x => x["Park Name"]);
-//   let bar_y1 = bar_data.map(x => x.Size);
-//   let bar_y2 = bar_data.map(x => x["Species Count"]);
-  
-//   // Trace1 for the Park Size
-//   let trace1 = {
-//     x: bar_x,
-//     y: bar_y1,
-//     type: 'bar',
-//     marker: {
-//       color: "skyblue"
-//     },
-//     text: bar_text,
-//     name: "National Park Size"
-//   };
-  
-//   // Trace 2 for the Species Count
-//   let trace2 = {
-//     x: bar_x,
-//     y: bar_y2,
-//     type: 'bar',
-//     marker: {
-//       color: "firebrick"
-//     },
-//     text: bar_text,
-//     name: "Species Count"
-//   };
-  
-//   // Create data array
-//   let bar_array = [trace1, trace2];
-  
-//   // Apply a title to the layout
-//   let layout = {
-//     title: "Conservation Status of Species by Park Size",
-//     barmode: "group",
-//     margin: {
-//       l: 50,
-//       r: 50,
-//       b: 200,
-//       t: 50,
-//       pad: 4
-//     }
-//   };
-  
-//   // Render the plot to the div tag with id "bar_chart"
-//   Plotly.newPlot("bar_chart", bar_array, layout);
-// }
+// INITIAL PAGE LOAD
 
-// // Event listener for CLICK on Button
-// d3.select("#filter").on("click", do_work);
+// Function to set default values and trigger do_work() on page load
+function initializePage() {
+  // Set default values for the dropdowns
+  d3.select("#state_filter").property("value", "All");
+  d3.select("#cons_filter").property("value", "All");
 
-// // On page load, don't wait for the click to make the graph, use default
-// do_work();
+  do_work();
+}
+
+// Call initializePage function when the page has loaded
+document.addEventListener("DOMContentLoaded", function() {
+  initializePage();
+});
 
 
 

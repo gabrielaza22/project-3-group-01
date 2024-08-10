@@ -1,16 +1,14 @@
 /* Fill browser window */
-body {
-  padding: 0;
-  margin: 0;
+#map-container {
+  height: 600px;
 }
 
-#map,
-body,
-html {
-  height: 100%;
+
+#map {
+  height: 80%;
 }
 
-/* from Leaflet Legend documentation */
+/* from Leaflet Legend documentation
 .info {
   padding: 6px 8px;
   font: 14px/16px Arial, Helvetica, sans-serif;
@@ -20,8 +18,8 @@ html {
   border-radius: 5px;
 }
 
-.info h4 {
-  margin: 0 0 5px;
+.info h4 { */
+  /* margin: 0 0 5px;
   color: #777;
 }
 
@@ -50,4 +48,4 @@ html {
   box-sizing: border-box;
   margin: 0;
   margin-bottom: 15px;
-}
+} */
