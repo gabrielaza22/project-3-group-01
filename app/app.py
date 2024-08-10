@@ -41,14 +41,14 @@ def get_dashboard(user_state, user_status):
 
     try:
 
-        # bar_data = sql.get_bar_data(user_state, user_status)
+        bar_data = sql.get_bar_data(user_state, user_status)
         bubble_data = sql.get_bubble_data(user_state, user_status)
-        # table_data = sql.get_table_data(user_state, user_status)
+        table_data = sql.get_table_data(user_state, user_status)
 
         data = {
-            # "bar_data": bar_data,
+            "bar_data": bar_data,
             "bubble_data": bubble_data,
-            # "table_data": table_data
+            "table_data": table_data
         }
         return(jsonify(data))
  

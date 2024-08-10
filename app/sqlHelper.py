@@ -14,7 +14,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///national_parks.sqlite')
+        self.engine = create_engine('sqlite:///national_parks_2.sqlite')
         # self.Base = None
 
     #     # automap Base classes
@@ -47,7 +47,7 @@ class SQLHelper():
         if user_status != 'All':
             status_clause = f"AND Conservation Status = '{user_status}'"
         else:
-            status_clause = "1=1"
+            status_clause = "AND 1=1"
 
         # build the query
         bar_query = f"""
@@ -115,7 +115,7 @@ class SQLHelper():
             AND
                 "Park Name" IN ('Great Smoky Mountains National Park', 'Redwood National Park', 'Shenandoah National Park', 'Death Valley National Park', 'Yellowstone National Park')
             GROUP BY
-                "Park Name",Category
+                "Park Name", Category
             ORDER BY
                 NumberOfSpecies DESC;
             """
@@ -131,10 +131,14 @@ class SQLHelper():
         # switch on user state
         if user_state != 'All':
             state_clause = f"State = '{user_state}'"
+        else:
+            state_clause = "1=1"
 
         # switch on user conservation status
         if user_status != 'All':
-            status_clause = f"Conservation Status = '{user_status}'"
+            status_clause = f"AND Conservation Status = '{user_status}'"
+        else:
+            status_clause = "AND 1=1"
 
         # build the query
         table_query = f"""
@@ -149,9 +153,8 @@ class SQLHelper():
             FROM
                 combined
             WHERE
-                1=1
-                {f"AND {state_clause}" if state_clause else ""}
-                {f"AND {status_clause}" if status_clause else ""}
+                {state_clause}
+                {status_clause}
             GROUP BY 
                 "Park Name", "State", "Conservation Status"
             ORDER BY
@@ -166,6 +169,7 @@ class SQLHelper():
 
         # Initialize WHERE clauses
 
+        # switch on user state
         if user_state != 'All':
             state_clause = f"State = '{user_state}'"
         else:
@@ -175,7 +179,7 @@ class SQLHelper():
         if user_status != 'All':
             status_clause = f"AND Conservation Status = '{user_status}'"
         else:
-            status_clause = "1=1"
+            status_clause = "AND 1=1"
 
         # build the query
         map_query = f"""
@@ -189,7 +193,6 @@ class SQLHelper():
             FROM
                 combined
             WHERE
-                1=1
                 {state_clause}
                 {status_clause}
             GROUP BY 
