@@ -14,7 +14,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///national_parks_2.sqlite')
+        self.engine = create_engine('sqlite:///national_parks_2-Copy1.sqlite')
         # self.Base = None
 
     #     # automap Base classes
