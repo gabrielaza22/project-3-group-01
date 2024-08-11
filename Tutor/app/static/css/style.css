@@ -1,0 +1,31 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#map-container {
+  height: 800px;
+  margin-bottom: 20px;
+}
+
+#map {
+  height: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.chart-container {
+  margin-bottom: 20px;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: orange;
+}
+
+.axis-label {
+  font-size: 12px;
+  font-weight: bold;
+}

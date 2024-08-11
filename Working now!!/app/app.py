@@ -30,6 +30,10 @@ def map():
 def about_us():
     return render_template("about_us.html")
 
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
+
 ####################################################
 
 ### SQL Queries ###
@@ -50,7 +54,7 @@ def get_dashboard(min_species, state):
 
 ####################################################
 
-# Get the stack bar chart for the total parks per state
+# Get the stacked bar chart for the total parks per state
 @app.route("/api/v1.0/get_index")
 def get_index():
     stackBar_data = sql.get_stackBar()
