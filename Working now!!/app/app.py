@@ -30,6 +30,7 @@ def map():
 def about_us():
     return render_template("about_us.html")
 
+####################################################
 
 ### SQL Queries ###
 
@@ -47,17 +48,19 @@ def get_dashboard(min_species, state):
     }
     return jsonify(data)
 
+####################################################
 
 # Get the stack bar chart for the total parks per state
 @app.route("/api/v1.0/get_index")
 def get_index():
     stackBar_data = sql.get_stackBar()
 
-    stadata = {
+    data = {
         "stackBar_data": stackBar_data,
     }
-    return(jsonify(stackBar_data))
+    return(jsonify(data))
 
+####################################################
 
 # Get the map for the species endangered per state
 @app.route("/api/v1.0/get_map/<int:min_species>/<state>")
@@ -72,8 +75,7 @@ def get_map_data(min_species, state):
         }
     return jsonify(data)
 
-
-
+####################################################
 
 # Run the App
 if __name__ == '__main__':

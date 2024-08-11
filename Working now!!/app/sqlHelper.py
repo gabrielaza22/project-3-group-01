@@ -57,6 +57,8 @@ class SQLHelper():
         data = df.to_dict(orient="records")
         return data
 
+###########################################################
+
     # Get the bubble chart data
     def get_bubble(self, min_species, state):
         if state == 'All':
@@ -93,18 +95,10 @@ class SQLHelper():
         """
 
         df = pd.read_sql(text(query), con=self.engine, params={"state": state, "min_species": min_species})
-
-        # # Validar datos
-        # df['Acres'] = df['Acres'].fillna(0)  # Reemplazar NaN en Acres
-        # df['Endangered_Species_Count'] = df['Endangered_Species_Count'].fillna(0)  # Reemplazar NaN en conteo de especies
-
-        # data = df.to_dict(orient="records")
-        # return data
-
-        df = pd.read_sql(text(query), con=self.engine, params={"state": state, "min_species": min_species})
         data = df.to_dict(orient="records")
         return data
 
+###########################################################
 
     # Get table data
     def get_table(self, min_species, state):
@@ -146,6 +140,8 @@ class SQLHelper():
         df = pd.read_sql(text(query), con=self.engine, params={"state": state, "min_species": min_species})
         data = df.to_dict(orient="records")
         return data
+    
+###########################################################
 
     # Get Stack Bar data
     def get_stackBar(self):
@@ -164,17 +160,16 @@ class SQLHelper():
         df = pd.read_sql(text(query), con=self.engine)
         data = df.to_dict(orient="records")
         return data
-    
+
+###########################################################
 
     # Get the map data
     def get_map(self, min_species, state):
-        # Ajustar la cláusula WHERE según el estado y el número mínimo de especies
         if state == 'All':
             state_clause = ""
         else:
             state_clause = f"AND p.State = :state"
         
-        # Construir la consulta SQL
         query = f"""
             SELECT 
                 p.Park_Name,
@@ -205,8 +200,6 @@ class SQLHelper():
                 p.Park_Name;
         """
         
-        # Ejecutar la consulta y cargar el resultado en un DataFrame
         df = pd.read_sql(text(query), con=self.engine, params={"state": state, "min_species": min_species})
-        # Convertir el DataFrame a un diccionario con formato de registros
         data = df.to_dict(orient="records")
         return data

@@ -18,8 +18,8 @@ function updateVisualizations() {
 
 function make_bar(filtered_data) {
 
-  if (!Array.isArray(filtered_data) || filtered_data.length === 0) 
-  if (!filtered_data.every(x => x.Park_Name && x.Endangered_Species_Count !== undefined))
+  // if (!Array.isArray(filtered_data) || filtered_data.length === 0) 
+  // if (!filtered_data.every(x => x.Park_Name && x.Endangered_Species_Count !== undefined))
 
   filtered_data.sort((a, b) => b.Endangered_Species_Count - a.Endangered_Species_Count);
 
@@ -67,10 +67,7 @@ function make_bar(filtered_data) {
 
 function make_bubble(filtered_data) {
   // Verificar que filtered_data no esté vacío
-  if (filtered_data.length === 0) {
-    console.error("No data available for bubble chart");
-    return;
-  }
+  // if (filtered_data.length === 0); 
 
   // Extraer los valores x, y, size y text para el gráfico de burbujas
   let bubble_x = filtered_data.map(x => x.Acres);
