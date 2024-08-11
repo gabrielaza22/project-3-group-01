@@ -14,7 +14,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///national_parks_2-Copy1.sqlite')
+        self.engine = create_engine('sqlite:///national_parks.sqlite')
         # self.Base = None
 
     #     # automap Base classes
@@ -70,7 +70,7 @@ class SQLHelper():
                 Acres DESC
             """
 
-        bar_df = pd.read_sql(text(bar_query), con = self.engine)
+        bar_df = pd.read_sql(text(bar_query), con = self.engine, params={"State": user_state, "Conservation Status": user_status})
         bar_data = bar_df.to_dict(orient="records")
         return(bar_data)
 
@@ -161,7 +161,7 @@ class SQLHelper():
                 Acres DESC
             """
 
-        table_df = pd.read_sql(text(table_query), con = self.engine)
+        table_df = pd.read_sql(text(table_query), con = self.engine, params={"State": user_state, "Conservation Status": user_status})
         table_data = table_df.to_dict(orient="records")
         return(table_data)
 
@@ -199,6 +199,6 @@ class SQLHelper():
                 "State"   
             """
 
-        map_df = pd.read_sql(text(map_query), con = self.engine)
+        map_df = pd.read_sql(text(map_query), con = self.engine, params={"State": user_state, "Conservation Status": user_status})
         map_data = map_df.to_dict(orient="records")
         return(map_data)

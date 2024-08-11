@@ -9,15 +9,15 @@ function do_work() {
   let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
   d3.json(url).then(function (data) {
 
-      // filter by user input
-      let filtered_data = data.filter(x => x.State === user_state);
+      // // filter by user input
+      // let filtered_data = data.filter(x => x.State === user_state);
 
-      if (user_state !== "All") {
-        filtered_data = filtered_data.filter(x => x.State === user_state);
-      }
-      if (user_status !== "All") {
-        filtered_data = filtered_data.filter(x => x["Conservation Status"] === user_status);
-      }
+      // if (user_state !== "All") {
+      //   filtered_data = filtered_data.filter(x => x.State === user_state);
+      // }
+      // if (user_status !== "All") {
+      //   filtered_data = filtered_data.filter(x => x["Conservation Status"] === user_status);
+      // }
 
     // create the graphs
     // make_sunburst(data.sunburst_data);
@@ -53,7 +53,7 @@ function make_table(table_data) {
 }
 
 
-function make_bubble(filtered_data) {
+function make_bubble(bubble_data) {
   let bubble_chart_data = [{
     x: bubble_data["Category"],
     y: bubble_data["NumberOfSpecies"],
@@ -68,7 +68,7 @@ function make_bubble(filtered_data) {
     width: 1200
   };
   // Plot the chart using Plotly
-  Plotly.newPlot('yourDivId', bubble_chart_data, layout);
+  Plotly.newPlot("bubble_chart", bubble_chart_data, layout);
 }
 
 
@@ -86,7 +86,7 @@ function make_bar(bar_data) {
     y: bar_y1,
     type: 'bar',
     marker: {
-      color: "skyblue"
+      color: "lightgreen"
     },
     text: bar_text,
     name: "National Park"
@@ -98,7 +98,7 @@ function make_bar(bar_data) {
     y: bar_y2,
     type: 'bar',
     marker: {
-      color: "firebrick"
+      color: "lightblue"
     },
     text: bar_text,
     name: "Species Breakdown"

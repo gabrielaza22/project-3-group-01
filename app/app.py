@@ -59,6 +59,7 @@ def get_dashboard(user_state, user_status):
 
 @app.route("/api/v1.0/get_map/<user_state>/<user_status>")
 def get_map(user_state, user_status):
+
     map_data = sql.get_map_data(user_state, user_status)
 
     return(jsonify(map_data))
