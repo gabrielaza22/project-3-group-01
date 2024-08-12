@@ -1,6 +1,4 @@
 import sqlalchemy
-# from sqlalchemy.ext.automap import automap_base
-# from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, text, func
 
 import pandas as pd
@@ -14,19 +12,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///national_parks.sqlite')
-        # self.Base = None
-
-    #     # automap Base classes
-    #     self.init_base()
-
-    # # COMMENT BACK IN IF USING THE ORM
-
-    # def init_base(self):
-    #     # reflect an existing database into a new model
-    #     self.Base = automap_base()
-    #     # reflect the tables
-    #     self.Base.prepare(autoload_with=self.engine)
+        self.engine = create_engine('sqlite:///national_parks_2.sqlite')
 
     #################################################
     # Database Queries
@@ -175,12 +161,6 @@ class SQLHelper():
         else:
             state_clause = "1=1"
 
-        # switch on user conservation status
-        if user_status != 'All':
-            status_clause = f"AND Conservation Status = '{user_status}'"
-        else:
-            status_clause = "AND 1=1"
-
         # build the query
         map_query = f"""
             SELECT
@@ -190,15 +170,14 @@ class SQLHelper():
                 Longitude,
                 Acres,
                 "Conservation Status"
+                COUNT ("Conservation Status") AS "Species Count",
             FROM
-                combined
+                all
             WHERE
                 {state_clause}
-                {status_clause}
-            GROUP BY 
-                "State"   
+                AND "Conservation Status" == "Endagered"
             """
 
-        map_df = pd.read_sql(text(map_query), con = self.engine, params={"State": user_state, "Conservation Status": user_status})
+        map_df = pd.read_sql(text(map_query), con = self.engine)
         map_data = map_df.to_dict(orient="records")
         return(map_data)
