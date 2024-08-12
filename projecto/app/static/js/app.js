@@ -110,7 +110,6 @@ function make_bubble(filtered_data) {
   Plotly.newPlot("bubble_chart", data, layout);
 }
 
-//######################################################
 
 // Function to create data table
 function make_table(data) {

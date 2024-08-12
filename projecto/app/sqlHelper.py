@@ -169,42 +169,21 @@ class SQLHelper():
 ###########################################################
 
     # Get the map data
-    def get_map(self, min_species, state):
-        if state == 'All':
-            state_clause = ""
-        else:
-            state_clause = f"AND p.State = :state"
+    def get_map(self):
         
-        query = f"""
-            SELECT 
-                p.Park_Name,
-                p.State,
-                p.Latitude,
-                p.Longitude,
-                COUNT(s.Park_Name) AS Endangered_Species_Count
-            FROM 
-                parks p
-            LEFT JOIN 
-                species s
-            ON 
-                p.Park_Name = s.Park_Name
-            AND 
-                s.Conservation_Status = 'Endangered'
-            WHERE 
-                1=1
-                {state_clause}
-            GROUP BY 
-                p.Park_Name,
-                p.State,
-                p.Latitude,
-                p.Longitude
-            HAVING 
-                COUNT(s.Park_Name) >= :min_species
-            ORDER BY 
-                p.State,
-                p.Park_Name;
-        """
-        
-        df = pd.read_sql(text(query), con=self.engine, params={"state": state, "min_species": min_species})
-        data = df.to_dict(orient="records")
-        return data
+        map_query = f"""
+            SELECT
+                "Park Name",
+                State,
+                Latitude,
+                Longitude,
+                Acres
+            FROM
+                parks
+            GROUP BY
+                "Park Name", "State"
+            """
+
+        map_df = pd.read_sql(text(map_query), con=self.engine)
+        data = map_df.to_dict(orient="records")
+        return(data)

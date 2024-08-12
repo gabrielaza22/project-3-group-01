@@ -39,34 +39,44 @@ function markerSize(size) {
 
 function circleColor(size) {
   if (size >= 9000000) {
-      color = "#722F37";
+      color = "#0B2C24";
   } else if (size >= 7000000) {
-      color =  "#7C0902";
+      color =  "#124230";
    } else if (size >= 5000000) {
-      color =  "#AB274F";
+      color =  "#175238";
    } else if (size >= 3000000) {
-      color =  "#BF4F51";
+      color =  "#1C6140";
    } else if (size >= 1000000) {
-      color =  "#F88379";
+      color =  "#217048";
    } else {
-      color =  "#FFC0CB";
+      color =  "#247A4D";
   }
   return color
 }
 
-// function treeMarker() {
-//   let treeIcon = L.ExtraMarkers.icon({
-//     icon: "ion-tree",
-//     iconColor: "white",
-//     markerColor: "green",
-//     shape: "circle"
-    // iconUrl: "../Images/pine-tree-icon.jpg",
-    // iconSize: [50, 100],
-    // iconAnchor: [50, 100], // Size in pixels
-    // popupAnchor: [0, -70] // Coordinates top left corner with point
-  // });
-  // return treeIcon;
-// }
+// let markerIcon = L.icon({
+//   iconUrl: `https://api.geoapify.com/v1/icon?type=awesome&color=%2352b74c&size=x-large&icon=tree&noWhiteCircle=true&scaleFactor=2&apiKey=d4c7c8ce991342f09bf3810cedcead71`,
+//   iconSize: [31, 46], // size of the icon
+//   iconAnchor: [15.5, 42], // point of the icon which will correspond to marker's location
+//   popupAnchor: [0, -45] // point from which the popup should open relative to the iconAnchor
+// });
+// let zooMarker = L.marker([48.096980, 11.555466], {
+//   icon: markerIcon
+// }).addTo(map);
+
+function treeMarker() {
+  let treeIcon = L.ExtraMarkers.icon({
+    // icon: "ion-tree",
+    // iconColor: "white",
+    // markerColor: "green",
+    // shape: "circle"
+    iconUrl: `https://api.geoapify.com/v1/icon?type=awesome&color=%2352b74c&size=x-large&icon=tree&noWhiteCircle=true&scaleFactor=2&apiKey=d4c7c8ce991342f09bf3810cedcead71`,
+    iconSize: [50, 100],
+    iconAnchor: [50, 100], // Size in pixels
+    popupAnchor: [0, -70] // Coordinates top left corner with point
+  });
+  return treeIcon;
+}
 
 
 // SET UP MARKERS FOR EACH PARK //
@@ -95,7 +105,7 @@ function createMap(data) {
         let color = circleColor(size)
 
         // make marker
-        let marker = L.marker(point);
+        let marker = L.marker(point, {icon: treeIcon});
         let popup = `<h4>${row["Park Name"]}</h4><hr><h4>State: ${row.State}</h4><hr><h5>Size: ${row.Acres.toLocaleString()} acres</h5>`;
         marker.bindPopup(popup);
         markers.addLayer(marker);
@@ -137,6 +147,24 @@ function createMap(data) {
 
     // Layer Control filter 
     L.control.layers(overlayLayers).addTo(map);
+
+    // Legend
+    let legend = L.control({position: "bottomright"});
+    legend.onAdd = function() {
+        let div = L.DomUtil.create("div", "info legend");
+        
+    let legendInfo = "<h4>Size of Park<br/>(Millions of Acres)</h4><br/>"
+        legendInfo += "<i style='background: #247A4D'></i><=1<br/>";
+        legendInfo += "<i style='background: #217048'></i>1-3<br/>";
+        legendInfo += "<i style='background: #1C6140'></i>3-5<br/>";
+        legendInfo += "<i style='background: #175238'></i>5-7<br/>";
+        legendInfo += "<i style='background: #124230'></i>7-9<br/>";
+        legendInfo += "<i style='background: #0B2C24'></i>9+";
+
+        div.innerHTML = legendInfo;
+        return div;
+    };
+    legend.addTo(myMap);
 
   // Initialize the Map
 

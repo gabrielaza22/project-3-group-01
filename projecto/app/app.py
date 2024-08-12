@@ -30,6 +30,10 @@ def map():
 def about_us():
     return render_template("about_us.html")
 
+@app.route("/resources")
+def resources():
+    return render_template("resources.html")
+
 ####################################################
 
 ### SQL Queries ###
@@ -63,17 +67,16 @@ def get_index():
 ####################################################
 
 # Get the map for the species endangered per state
-@app.route("/api/v1.0/get_map/<int:min_species>/<state>")
-def get_map_data(min_species, state):
+@app.route("/api/v1.0/get_map")
+def get_map():
 
-    # Obtener los datos del mapa con los filtros aplicados
-    map_data = sql.get_map(min_species, state)
+    map_data = sql.get_map()
 
-    # Crear la respuesta JSON con los datos
     data = {
-        "map_data": map_data,
+            "map_data": map_data,
         }
-    return jsonify(data)
+
+    return(jsonify(data))
 
 ####################################################
 
