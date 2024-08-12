@@ -12,7 +12,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///..Data_engineering_eda/national_parks_all.sqlite')
+        self.engine = create_engine("sqlite:///national_parks.sqlite")
 
     #################################################
     # Database Queries
@@ -126,15 +126,21 @@ class SQLHelper():
         return(table_data)
 
 
-    def get_map_data(self, user_state):
+    def get_map_data(self):
 
         # Initialize WHERE clauses
 
-        # switch on user state
-        if user_state != 'All':
-            state_clause = f"State = '{user_state}'"
-        else:
-            state_clause = "1=1"
+        # # switch on user state
+        # if user_state == 'All':
+        #     state_clause = "1-1"
+        # else:
+        #     state_clause = f"State = '{user_state}'"
+
+        # # switch on user conservation status
+        # if user_status == 'All':
+        #     status_clause = "AND 1=1"
+        # else:
+        #     status_clause = f"AND Conservation Status = '{user_status}'"
 
         # build the query
         map_query = f"""
@@ -143,16 +149,32 @@ class SQLHelper():
                 State,
                 Latitude,
                 Longitude,
-                Acres,
-                "Conservation Status"
-                COUNT ("Conservation Status") AS "Species Count",
+                Acres
             FROM
-                all
-            WHERE
-                {state_clause}
-                AND "Conservation Status" == "Endagered"
+                parks
+            GROUP BY
+                "Park Name", "State"
             """
 
-        map_df = pd.read_sql(text(map_query), con = self.engine)
-        map_data = map_df.to_dict(orient="records")
-        return(map_data)
+        map_df = pd.read_sql(text(map_query), con=self.engine)
+        data = map_df.to_dict(orient="records")
+        return(data)
+    
+        #     # build the query
+        # map_query = f"""
+        #     SELECT
+        #         "Park Name",
+        #         State,
+        #         Latitude,
+        #         Longitude,
+        #         Acres,
+        #         "Conservation Status"
+        #         COUNT ("Conservation Status") AS "Species Count",
+        #     FROM
+        #         all
+        #     WHERE
+        #         {state_clause}
+        #         {status_clause}
+        #     GROUP BY
+        #         "Park Name", "State", "Conservation Status"
+        #     """

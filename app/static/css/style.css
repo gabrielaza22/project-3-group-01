@@ -8,6 +8,35 @@
   height: 80%;
 }
 
+.bar {
+  cursor: pointer;
+}
+#tooltip {
+  position: absolute;
+  text-align: center;
+  padding: 5px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  border-radius: 5px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.x-axis text, .y-axis text {
+  font-size: 12px; /* Tamaño de fuente más pequeño para las etiquetas de los estados */
+  fill: #fff;
+}
+.x-axis text.title, .y-axis text.title {
+  font-weight: bold;
+  font-size: 18px; /* Tamaño de fuente mayor para los títulos de los ejes */
+}
+.x-axis path, .y-axis path {
+  stroke: #fff;
+}
+.x-axis line, .y-axis line {
+  stroke: #fff;
+}
+
 /* from Leaflet Legend documentation
 .info {
   padding: 6px 8px;

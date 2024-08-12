@@ -1,134 +1,173 @@
+
+// LOAD BASE MAP //
+
 let map;
 
-function createMap() {
+function initMap() {
 
   // Initialize map to view center of US
-  let map = L.map("map").setView([39.50, -98.35], 5);
+  map = L.map("map").setView([39.50, -98.35], 5);
  
   // Base Layers
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  let street = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-  }).addTo(map);
+  });
 
-  L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+  let topo = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
     attribution: 'Map data: &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="http://viewfinderpanoramas.org">SRTM</a> | Map style: &copy; <a href="https://opentopomap.org">OpenTopoMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-  }).addTo(map);
+  });
+
+  // Only one base layer can be shown at a time.
+  let baseLayers = {
+    Street: street,
+    Topography: topo
+  };
+  
+  // Layer Control filter 
+  L.control.layers(baseLayers).addTo(map);
+
+  topo.addTo(map);
+}
+
+
+// STYLING FUNCTIONS //
+
+function markerSize(size) {
+  let radius = size / 10
+  return radius
+}
+
+function circleColor(size) {
+  if (size >= 9000000) {
+      color = "#722F37";
+  } else if (size >= 7000000) {
+      color =  "#7C0902";
+   } else if (size >= 5000000) {
+      color =  "#AB274F";
+   } else if (size >= 3000000) {
+      color =  "#BF4F51";
+   } else if (size >= 1000000) {
+      color =  "#F88379";
+   } else {
+      color =  "#FFC0CB";
+  }
+  return color
+}
+
+// function treeMarker() {
+//   let treeIcon = L.ExtraMarkers.icon({
+//     icon: "ion-tree",
+//     iconColor: "white",
+//     markerColor: "green",
+//     shape: "circle"
+    // iconUrl: "../Images/pine-tree-icon.jpg",
+    // iconSize: [50, 100],
+    // iconAnchor: [50, 100], // Size in pixels
+    // popupAnchor: [0, -70] // Coordinates top left corner with point
+  // });
+  // return treeIcon;
+// }
+
+
+// SET UP MARKERS FOR EACH PARK //
+
+function createMap(data) {
+
+  // Overlay layers
+  let markers = L.markerClusterGroup();
+  let heatArray = [];
+  let circleArray = [];
+
+  // Add marker for each park
+  for (let i = 0; i < data.length; i++) {
+    let row = data[i];
+    // console.log("Row:", row);
+
+    let latitude = row.Latitude;
+    let longitude = row.Longitude;
+    // console.log("Latitude:", latitude, "Longitude:", longitude);
+
+    // Check if latitude and longitude are defined before proceeding
+    if (latitude !== undefined && longitude !== undefined) {
+        // extract coordinates
+        let point = [latitude, longitude];
+        let size = row.Acres;
+        let color = circleColor(size)
+
+        // make marker
+        let marker = L.marker(point);
+        let popup = `<h4>${row["Park Name"]}</h4><hr><h4>State: ${row.State}</h4><hr><h5>Size: ${row.Acres.toLocaleString()} acres</h5>`;
+        marker.bindPopup(popup);
+        markers.addLayer(marker);
+
+        // add to heatmap
+        heatArray.push(point);
+
+        // create circle
+        let circleMarker = L.circle(point, {
+          fillOpacity: 0.5,
+          color: color,
+          fillColor: color,
+          radius: markerSize(size)
+      }).bindPopup(popup);
+
+      circleArray.push(circleMarker);
+
+    } else {
+        console.log("Latitude or Longitude is undefined for row:", row);
+    }
+}
+
+  // Create heatmap layer
+  let heatLayer = L.heatLayer(heatArray, {
+    radius: 25,
+    blur: 10
+  });
+
+  // Create circle layer
+  let circleLayer = L.layerGroup(circleArray);
+
+  // Layer Controls
+
+  let overlayLayers = {
+    Markers: markers,
+    Heatmap: heatLayer,
+    Circles: circleLayer
+  }
+
+    // Layer Control filter 
+    L.control.layers(overlayLayers).addTo(map);
+
+  // Initialize the Map
+
+  // Destroy the old map
+  d3.select("#map-container").html("");
+
+  // rebuild the map
+  d3.select("#map-container").html("<div id='map'></div>");
 
 }
 
-// // Function to update the map with new data
-// function updateMap(mapData) {
-//   // Clear existing markers
-//   map.eachLayer(layer => {
-//       if (layer instanceof L.Marker) {
-//           map.removeLayer(layer);
-//       }
-//   });
 
-//   // Add new markers for each park
-//   mapData.forEach(park => {
-//       L.marker([park.Latitude, park.Longitude])
-//           .addTo(map)
-//           .bindPopup(`<strong>${park.Park_Name}</strong><br>Endangered Species Count: ${park.Species_Count}`)
-//           .openPopup();
-//   });
-
-//   console.log(mapData);
-// }
-
-  // // Overlay layers
-  // let markers = L.markerClusterGroup();
-  // let heatArray = [];
-
-  // // Add marker for each park
-  // for (let i = 0; i < data.map_data.length; i++){
-  //   let row = data.map_data[i];
-  //   let latitude = row.latitude;
-  //   let longitude = row.longitude;
-
-  //   // extract coordinates
-  //   let point = [latitude, longitude];
-
-  //   // make marker
-  //   let marker = L.marker(point);
-  //   let popup = `<h3>${row["Park Name"]}</h3><hr><h3>${row.State}</h3><hr><h4>${row["Conservation Status"]}</h4>`;
-  //   marker.bindPopup(popup);
-  //   markers.addLayer(marker);
-
-  //   // add to heatmap
-  //   heatArray.push(point);
-  // }
-
-  // // create layer
-  // let heatLayer = L.heatLayer(heatArray, {
-  //   radius: 25,
-  //   blur: 10
-  // });
-
-  // // Layer Controls
-
-  // // Only one base layer can be shown at a time.
-  // let baseLayers = {
-  //   Street: street,
-  //   Topography: topo
-  // };
-
-  // let overlayLayers = {
-  //   Markers: markers,
-  //   Heatmap: heatLayer
-  // }
-
-  // // Initialize the Map
-
-  // // Destroy the old map
-  // d3.select("#map-container").html("");
-
-  // // rebuild the map
-  // d3.select("#map-container").html("<div id='map'></div>");
-
-
-  // // Layer Control filter 
-  // L.control.layers(baseLayers).addTo(map);
-
-// // Fetch map data from the server and update the map
-// function callMapData(user_state, user_status) {
-//   fetch(`/api/v1.0/get_map/${user_state}/${user_status}`)
-//       .then(response => response.json())
-//       .then(data => {
-//           console.log("Map Data:", data.map_data); // Log data for debugging
-//           updateMap(data.map_data);
-//       })
-//       .catch(error => console.error("Error fetching map data:", error));
-// }
+// ADD PARK MARKERS TO MAP //
 
 function map_parks() {
-  // extract user input
-  let user_state = d3.select("#state_filter").property("value");
-  let user_status = d3.select("#cons_filter").property("value");
 
-  // We need to make a request to the API
-  let url = `/api/v1.0/get_map/${user_state}/${user_status}`;
+  // Make a request to the API
+  const url = `/api/v1.0/get_map`;
 
-  d3.json(url).then(function (map_data) {
-    console.log("Map Data:", map_data); // Log data for debugging
-    updateMap(map_data);
+  console.log("API URL:", url); // Log the API URL
+
+  d3.json(url).then(function (data) {
+    console.log("Map Data:", data.map_data); // Log data for debugging
+    
+    createMap(data.map_data);
   })
   .catch(error => console.error("Error fetching map data:", error));
 }
 
 
-// INITIAL PAGE LOAD
+// INITIAL PAGE LOAD //
 
-// Function to set default values and trigger do_work() on page load
-function initializePage() {
-  // Set default values for the dropdowns
-  d3.select("#state_filter").property("value", "All");
-  d3.select("#cons_filter").property("value", "All");
-
-  map_parks();
-}
-
-// Initialize the map on page load
-document.addEventListener('DOMContentLoaded', () => {
-  createMap();
-});
+initMap();
+map_parks();

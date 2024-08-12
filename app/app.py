@@ -57,12 +57,16 @@ def get_dashboard(user_state, user_status):
         app.logger.error(f"Error in get_dashboard: {e}")
         return jsonify({"error": "Internal server error"}), 500
 
-@app.route("/api/v1.0/get_map/<user_state>/<user_status>")
-def get_map(user_state, user_status):
+@app.route("/api/v1.0/get_map")
+def get_map():
 
-    map_data = sql.get_map_data(user_state, user_status)
+    map_data = sql.get_map_data()
 
-    return(jsonify(map_data))
+    data = {
+            "map_data": map_data,
+        }
+
+    return(jsonify(data))
 
 
 # Run the App

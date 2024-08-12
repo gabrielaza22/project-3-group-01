@@ -32,6 +32,11 @@
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.css">
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.0.3/dist/MarkerCluster.Default.css">
 
+    <!-- Icons -->
+    <script src="static/js/leaflet.extra-markers.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="static/css/leaflet.extra-markers.min.css">
+
     <!-- JS IMPORTS - External Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="https://d3js.org/d3.v7.min.js"></script>
@@ -66,6 +71,57 @@
     <div class="container-fluid mt-4">
         <h1 class="text-center">National Parks Map</h1>
 
+        <div class="row">
+            <div>
+                <label for="state_filter">State</label>
+                <select id="state_filter" class="form-select">
+                    <option value="All" selected>All</option>
+                    <option value="AK">AK</option>
+                    <option value="AR">AR</option>
+                    <option value="AZ">AZ</option>
+                    <option value="CA">CA</option>
+                    <option value="CO">CO</option>
+                    <option value="FL">FL</option>
+                    <option value="HI">HI</option>
+                    <option value="ID">ID</option>
+                    <option value="KY">KY</option>
+                    <option value="ME">ME</option>
+                    <option value="MI">MI</option>
+                    <option value="MN">MN</option>
+                    <option value="MT">MT</option>
+                    <option value="NC">NC</option>
+                    <option value="ND">ND</option>
+                    <option value="NM">NM</option>
+                    <option value="NV">NV</option>
+                    <option value="OH">OH</option>
+                    <option value="OR">OR</option>
+                    <option value="SC">SC</option>
+                    <option value="SD">SD</option>
+                    <option value="TN">TN</option>
+                    <option value="TX">TX</option>
+                    <option value="UT">UT</option>
+                    <option value="VA">VA</option>
+                    <option value="WA">WA</option>
+                    <option value="WY">WY</option>
+                </select>
+
+                <label for="cons_filter">Conservation Status</label>
+                <select id="cons_filter" class="form-select">
+                    <option value="All" selected>All</option>
+                    <option value="Extinct">Extinct</option>
+                    <option value="Endangered">Endangered</option>
+                    <option value="Proposed Endangered">Proposed Endangered</option>
+                    <option value="Threatened">Threatened</option>
+                    <option value="Proposed Threatened">Proposed Threatened</option>
+                    <option value="Species of Concern">Species of Concern</option>
+                    <option value="In Recovery">In Recovery</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Migratory">Migratory</option>
+                    <option value="Resident">Resident</option>
+                    <option value="Breeder">Breeder</option>
+                </select>
+
+
         <!-- Map container -->
         <div id="map" style="width: 100%; height: 600px;"></div>
     </div>
@@ -74,7 +130,7 @@
      <br/>
 
     <!-- Our JavaScript code -->
-    <script src="static/js/map.js"></script>
+    <script type="text/javascript" src="static/js/map.js"></script>
 </body>
 
 </html>

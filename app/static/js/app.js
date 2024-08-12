@@ -1,5 +1,5 @@
 
-function do_work() {
+function updateVisualizations() {
 
   // extract user input
   let user_state = d3.select("#state_filter").property("value");
@@ -144,7 +144,7 @@ d3.select("#cons_filter").on("change", function() {
 // Event listener for the button click
 d3.select("#filter").on("click", function() {
   console.log(`Filter Results button clicked: State = ${user_state} and Conservation Status = ${user_status}`);
-  do_work();
+  updateVisualizations();
 });
 
 
@@ -152,7 +152,7 @@ d3.select("#filter").on("click", function() {
 
 // Call do_work function when the page has loaded
 document.addEventListener("DOMContentLoaded", function() {
-  do_work();
+  updateVisualizations();
 });
 
 
