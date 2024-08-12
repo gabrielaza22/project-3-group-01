@@ -8,6 +8,7 @@ function do_work() {
   // make a request to the API
   let url = `/api/v1.0/get_dashboard/${user_state}/${user_status}`;
   d3.json(url).then(function (data) {
+    console.log(data)
 
       // // filter by user input
       // let filtered_data = data.filter(x => x.State === user_state);
@@ -20,7 +21,6 @@ function do_work() {
       // }
 
     // create the graphs
-    // make_sunburst(data.sunburst_data);
     make_bar(data.bar_data);
     make_bubble(data.bubble_data);
     make_table(data.table_data)
@@ -122,7 +122,7 @@ function make_bar(bar_data) {
   };
 
   // Render the plot to the div tag with id "plot"
-  Plotly.newPlot("bar_chart", bar_array, layout);
+  Plotly.newPlot("bar", bar_array, layout);
 
 }
 
@@ -131,11 +131,14 @@ function make_bar(bar_data) {
 // Event listener for the dropdown selection change for State
 d3.select("#state_filter").on("change", function() {
   user_state = d3.select(this).property("value");
+  console.log(`State Filter Changed: State = ${user_state}`);
 });
 
 // Event listener for the dropdown selection change for Conservation Status
 d3.select("#cons_filter").on("change", function() {
   user_status = d3.select(this).property("value");
+  console.log(`Conservation Status Filter Changed: Conservation Status = ${user_status}`);
+
 });
 
 // Event listener for the button click
@@ -147,18 +150,9 @@ d3.select("#filter").on("click", function() {
 
 // INITIAL PAGE LOAD
 
-// Function to set default values and trigger do_work() on page load
-function initializePage() {
-  // Set default values for the dropdowns
-  d3.select("#state_filter").property("value", "All");
-  d3.select("#cons_filter").property("value", "All");
-
-  do_work();
-}
-
-// Call initializePage function when the page has loaded
+// Call do_work function when the page has loaded
 document.addEventListener("DOMContentLoaded", function() {
-  initializePage();
+  do_work();
 });
 
 

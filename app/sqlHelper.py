@@ -12,7 +12,7 @@ class SQLHelper():
 
     # define properties
     def __init__(self):
-        self.engine = create_engine('sqlite:///national_parks_2.sqlite')
+        self.engine = create_engine('sqlite:///..Data_engineering_eda/national_parks_all.sqlite')
 
     #################################################
     # Database Queries
@@ -24,16 +24,16 @@ class SQLHelper():
         # Initialize WHERE clauses
 
         # switch on user state
-        if user_state != 'All':
-            state_clause = f"State = '{user_state}'"
+        if user_state == 'All':
+            state_clause = "1-1"
         else:
-            state_clause = "1=1"
+            state_clause = f"State = '{user_state}'"
 
         # switch on user conservation status
-        if user_status != 'All':
-            status_clause = f"AND Conservation Status = '{user_status}'"
-        else:
+        if user_status == 'All':
             status_clause = "AND 1=1"
+        else:
+            status_clause = f"AND Conservation Status = '{user_status}'"
 
         # build the query
         bar_query = f"""
@@ -46,7 +46,7 @@ class SQLHelper():
                 State,
                 Acres
             FROM
-                combined
+                all
             WHERE
                 {state_clause}
                 {status_clause}
@@ -59,34 +59,7 @@ class SQLHelper():
         bar_df = pd.read_sql(text(bar_query), con = self.engine, params={"State": user_state, "Conservation Status": user_status})
         bar_data = bar_df.to_dict(orient="records")
         return(bar_data)
-
-    # def get_sunburst_data(self):
-        
-    #     sunburst_query = """
-    #         SELECT
-    #             p."Park Name",
-    #             COUNT(s."Scientific Name") AS species_count,
-    #             s."Category",
-    #             p."State"
-    #         FROM
-    #             Parks p
-    #         JOIN
-    #             Species s
-    #         ON
-    #             p."Park Name" = s."Park Name"
-    #         WHERE
-    #             s."Conservation Status" = 'Endangered'
-    #         GROUP BY
-    #             p."Park Name",
-    #             s."Category"
-    #         ORDER BY
-    #             species_count DESC
-    #         LIMIT 10;
-    #         """
-
-    #     sunburst_df = pd.read_sql(sunburst_query, con=self.engine)
-    #     sunburst_data = sunburst_df.to_dict(orient="records")
-    #     return sunburst_data
+    
 
     def get_bubble_data(self):
 
@@ -110,21 +83,22 @@ class SQLHelper():
         bubble_data = bubble_df.to_dict(orient="records")
         return(bubble_data)
     
+
     def get_table_data(self, user_state, user_status):
 
         # Initialize WHERE clauses
 
         # switch on user state
-        if user_state != 'All':
-            state_clause = f"State = '{user_state}'"
+        if user_state == 'All':
+            state_clause = "1-1"
         else:
-            state_clause = "1=1"
+            state_clause = f"State = '{user_state}'"
 
         # switch on user conservation status
-        if user_status != 'All':
-            status_clause = f"AND Conservation Status = '{user_status}'"
-        else:
+        if user_status == 'All':
             status_clause = "AND 1=1"
+        else:
+            status_clause = f"AND Conservation Status = '{user_status}'"
 
         # build the query
         table_query = f"""
@@ -137,7 +111,7 @@ class SQLHelper():
                 State,
                 Acres
             FROM
-                combined
+                all
             WHERE
                 {state_clause}
                 {status_clause}
@@ -151,7 +125,8 @@ class SQLHelper():
         table_data = table_df.to_dict(orient="records")
         return(table_data)
 
-    def get_map_data(self, user_state, user_status):
+
+    def get_map_data(self, user_state):
 
         # Initialize WHERE clauses
 

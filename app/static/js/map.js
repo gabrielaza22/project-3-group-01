@@ -16,33 +16,33 @@ function createMap() {
 
 }
 
-// Function to update the map with new data
-function updateMap(mapData) {
-  // Clear existing markers
-  map.eachLayer(layer => {
-      if (layer instanceof L.Marker) {
-          map.removeLayer(layer);
-      }
-  });
+// // Function to update the map with new data
+// function updateMap(mapData) {
+//   // Clear existing markers
+//   map.eachLayer(layer => {
+//       if (layer instanceof L.Marker) {
+//           map.removeLayer(layer);
+//       }
+//   });
 
-  // Add new markers for each park
-  mapData.forEach(park => {
-      L.marker([park.Latitude, park.Longitude])
-          .addTo(map)
-          .bindPopup(`<strong>${park.Park_Name}</strong><br>Endangered Species Count: ${park.Species_Count}`)
-          .openPopup();
-  });
+//   // Add new markers for each park
+//   mapData.forEach(park => {
+//       L.marker([park.Latitude, park.Longitude])
+//           .addTo(map)
+//           .bindPopup(`<strong>${park.Park_Name}</strong><br>Endangered Species Count: ${park.Species_Count}`)
+//           .openPopup();
+//   });
 
-  console.log(mapData);
-}
+//   console.log(mapData);
+// }
 
   // // Overlay layers
   // let markers = L.markerClusterGroup();
   // let heatArray = [];
 
   // // Add marker for each park
-  // for (let i = 0; i < data.length; i++){
-  //   let row = data[i];
+  // for (let i = 0; i < data.map_data.length; i++){
+  //   let row = data.map_data[i];
   //   let latitude = row.latitude;
   //   let longitude = row.longitude;
 

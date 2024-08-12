@@ -64,16 +64,6 @@ def get_map(user_state, user_status):
 
     return(jsonify(map_data))
 
-# @app.route('/api/v1.0/get_sunburst_data')
-# def get_sunburst_data():
-#     # Obtain the data from get_sunburst from SQLHelper
-#     sunburst_data = sql.get_sunburst_data()
-#     # print("Fetched data:", sunburst_data)  # Print the data to the console
-
-#     data = {
-#         "Sunburst_data": sunburst_data
-#     }
-#     return jsonify(sunburst_data)
 
 # Run the App
 if __name__ == '__main__':
