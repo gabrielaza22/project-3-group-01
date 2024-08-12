@@ -1,38 +1,37 @@
-
+// Function to update visualizations based on selected filters
 function updateVisualizations() {
+  // Get filter values
   let min_species = d3.select("#min_species_filter").property("value");
   min_species = parseInt(min_species);
   let state = d3.select("#state_filter").property("value");
 
-  // Request to the API
+  // Request data from API
   let url = `/api/v1.0/get_dashboard/${min_species}/${state}`;
   d3.json(url).then(function(data) {
-
+    console.log(data);
     make_bar(data.bar_data);
     make_bubble(data.bubble_data);
     make_table(data.table_data);
-  })
+  });
 }
 
-//##########################################################
 
+// Function to create bar chart
 function make_bar(filtered_data) {
-
-  // if (!Array.isArray(filtered_data) || filtered_data.length === 0) 
-  // if (!filtered_data.every(x => x.Park_Name && x.Endangered_Species_Count !== undefined))
-
   filtered_data.sort((a, b) => b.Endangered_Species_Count - a.Endangered_Species_Count);
 
-  // Extract the data for the bar chart
   let bar_x = filtered_data.map(x => x.Park_Name);
   let bar_y = filtered_data.map(x => x.Endangered_Species_Count);
+
+  // Define a color scale using d3.schemeSet3
+  const colorScale = d3.scaleOrdinal(d3.schemeSet3);
 
   let trace1 = {
     x: bar_x,
     y: bar_y,
     type: 'bar',
     marker: {
-      color: "lightgreen" // Cambiar el color según tu preferencia
+      color: filtered_data.map(d => colorScale(d.Park_Name)), // Use color scale here
     },
     text: bar_y,
     textposition: 'auto',
@@ -42,10 +41,10 @@ function make_bar(filtered_data) {
   let data = [trace1];
 
   let layout = {
-    title: "Endangered Species Count by Park",
+    title: "Endangered Species Count by Park per State",
     xaxis: {
       title: "Park Name",
-      tickangle: -45 // Opcional: gira las etiquetas del eje x para mejor legibilidad
+      tickangle: -45
     },
     yaxis: {
       title: "Endangered Species Count"
@@ -54,7 +53,7 @@ function make_bar(filtered_data) {
     margin: {
       l: 50,
       r: 50,
-      b: 150, // Ajustar el margen inferior para acomodar etiquetas largas
+      b: 150,
       t: 50,
       pad: 4
     }
@@ -63,26 +62,24 @@ function make_bar(filtered_data) {
   Plotly.newPlot("bar_chart", data, layout);
 }
 
-//##########################################################
 
+// Function to create bubble chart
 function make_bubble(filtered_data) {
-  // Verificar que filtered_data no esté vacío
-  // if (filtered_data.length === 0); 
-
-  // Extraer los valores x, y, size y text para el gráfico de burbujas
   let bubble_x = filtered_data.map(x => x.Acres);
   let bubble_y = filtered_data.map(x => x.Endangered_Species_Count);
-  let bubble_size = filtered_data.map(x => x.Endangered_Species_Count * 10); // Ajustar el tamaño de las burbujas
-  let bubble_text = filtered_data.map(x => x.Park_Name);
+  let bubble_size = filtered_data.map(x => x.Endangered_Species_Count * 10);
+  let bubble_text = filtered_data.map(x => `${x.Park_Name}<br>Number of Species Endangered: ${x.Endangered_Species_Count}`);
 
-  // Crear el trace para el gráfico de burbujas
+  // Define a color scale using d3.schemeSet3
+  const colorScale = d3.scaleOrdinal(d3.schemeSet3);
+
   let trace1 = {
     x: bubble_x,
     y: bubble_y,
     mode: 'markers',
     marker: {
       size: bubble_size,
-      color: "lightblue",
+      color: filtered_data.map(d => colorScale(d.Park_Name)), // Use color scale here
       opacity: 0.6,
       line: {
         width: 1,
@@ -93,17 +90,12 @@ function make_bubble(filtered_data) {
     type: 'scatter'
   };
 
-  // Crear el array de datos
   let data = [trace1];
 
-  // Aplicar un título y configuración a la disposición
   let layout = {
-    title: "Endangered Species Count by Park",
+    title: "Acreage Size per Park",
     xaxis: {
       title: "Acres"
-    },
-    yaxis: {
-      title: "Endangered Species Count"
     },
     showlegend: false,
     margin: {
@@ -115,16 +107,18 @@ function make_bubble(filtered_data) {
     }
   };
 
-  // Renderizar el gráfico en el div con id "bubble_chart"
   Plotly.newPlot("bubble_chart", data, layout);
 }
 
+//######################################################
 
-//##########################################################
-
+// Function to create data table
 function make_table(data) {
-
-  if (!Array.isArray(data) || data.length === 0);
+  if (!Array.isArray(data) || data.length === 0) {
+    // Handle case where no data is returned
+    d3.select("#data_table").select("tbody").html("<tr><td colspan='7'>No data available</td></tr>");
+    return;
+  }
 
   let tbody = d3.select("#data_table").select("tbody");
   tbody.html("");
@@ -136,11 +130,13 @@ function make_table(data) {
     row.append("td").text(d.Acres || "");
     row.append("td").text(d.Latitude || "");
     row.append("td").text(d.Longitude || "");
+    // row.append("td").text(d.Conservation_Status || ""); // Assuming the status is in the data
+    // row.append("td").text(d.Endangered_Species_Count || ""); // Add species count
   });
 }
 
-// Event listener for CLICK on Button
+// Event listener for click on the filter button
 d3.select("#filter").on("click", updateVisualizations);
 
-// On page load, don't wait for the click to make the graph, use default
+// On page load, update visualizations with default values
 updateVisualizations();

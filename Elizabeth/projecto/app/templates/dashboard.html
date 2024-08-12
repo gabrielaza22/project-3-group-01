@@ -77,7 +77,7 @@
         <div class="row">
             <div class="col-md-6">
                 <label for="state_filter">State</label>
-                <select id="state_filter">
+                <select id="state_filter" class="form-select">
                     <option value="All" selected>All</option>
                     <option value="AK">AK</option>
                     <option value="AR">AR</option>
@@ -109,21 +109,15 @@
                 </select>
 
                 <label for="min_species_filter">Minimum Endangered Species Count</label>
-                <select id="min_species_filter">
+                <select id="min_species_filter" class="form-select">
                     <option value="0" selected>0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
                     <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
                     <option value="10">10</option>
+                    <option value="15">15</option>
+                    <option value="20">20</option>
                 </select>
 
-                <button id="filter">Filter Results</button>
+                <button id="filter" class="btn btn-primary mt-2">Filter Results</button>
             </div>
             <div class="col-md-6">
                 <p>Info about conservation status here. Include a note that if a state is not listed in the filter, there is no national park in that state. Maybe list states with their abbreviations?</p>
@@ -132,10 +126,10 @@
         <hr/>
         <div class="row">
             <div class="col-md-6">
-                <div id="bar_chart"></div>
+                <div id="bar_chart" style="height: 400px;"></div>
             </div>
             <div class="col-md-6">
-                <div id="bubble_chart"></div>
+                <div id="bubble_chart" style="height: 400px;"></div>
             </div>
         </div>
         <hr/>
@@ -151,19 +145,20 @@
                         <th>Size (Acres)</th>
                         <th>Latitude</th>
                         <th>Longitude</th>
-                        <th>Conservation Status</th>
-                        <th>Species Count</th>
+                        <!-- <th>Conservation Status</th>
+                        <th>Species Count</th> -->
                     </tr>
                     </thead>
                     <tbody>
+                    <!-- Data will be inserted here by JavaScript -->
                     </tbody>
                 </table>
             </div>
         </div>
-     </div>
+    </div>
 
-     <br/>
-     <br/>
+    <br/>
+    <br/>
 
     <script src="./static/js/app.js"></script>
 </body>

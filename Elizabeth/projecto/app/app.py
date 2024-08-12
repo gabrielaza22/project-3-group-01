@@ -37,9 +37,9 @@ def about_us():
 # Get the bar, bubble and table
 @app.route("/api/v1.0/get_dashboard/<int:min_species>/<state>")
 def get_dashboard(min_species, state):
-    bar_data = sql.get_bar(min_species, state),
-    bubble_data = sql.get_bubble(min_species, state),
-    table_data = sql.get_table(min_species, state),
+    bar_data = sql.get_bar(min_species, state)
+    bubble_data = sql.get_bubble(min_species, state)
+    table_data = sql.get_table(min_species, state)
 
     data = {
         "bar_data": bar_data,
@@ -47,6 +47,7 @@ def get_dashboard(min_species, state):
         "table_data": table_data
     }
     return jsonify(data)
+
 
 ####################################################
 

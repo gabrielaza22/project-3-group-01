@@ -2,14 +2,13 @@
 let map;
 
 function initMap() {
+    console.log("Initializing map...");
     map = L.map('map').setView([37.8, -96], 4); // Coordenadas y zoom iniciales
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 }
-
-// Función para actualizar el mapa con datos
 function updateMap(mapData) {
     // Limpiar los marcadores existentes
     map.eachLayer(layer => {
@@ -27,7 +26,6 @@ function updateMap(mapData) {
     });
 }
 
-// Obtener los datos del mapa y actualizar
 function fetchMapData(min_species, state) {
     fetch(`/api/v1.0/get_map/${min_species}/${state}`)
         .then(response => response.json())
@@ -37,7 +35,6 @@ function fetchMapData(min_species, state) {
         })
         .catch(error => console.error("Error fetching map data:", error));
 }
-
 // Inicializar el mapa al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
     initMap();
