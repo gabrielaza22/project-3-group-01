@@ -130,7 +130,8 @@ p {
 /* The hero image */
 .hero2-image {
   /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
-  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/parks.PNG");
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../images/parks_banner.png");
+
   
   /* Set a specific height */
   height: 50%;
@@ -139,7 +140,8 @@ p {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  position: relative;}
+  position: relative;
+}
 
 .custom-heading {
     background-color: rgba(61, 202, 190, 0.548);
