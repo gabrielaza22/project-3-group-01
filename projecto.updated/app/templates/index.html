@@ -73,75 +73,78 @@
                     <a class="nav-link" href="/about_us">About Us</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/resources">Resources and Works Cited</a>
+                    <a class="nav-link" href="/resources">Resources</a>
                     </li>
             </ul>
         </div>
     </nav>
     <div class="hero-image">
         <div class="hero-text">
-            <h1>Biodiversity in National Parks</h1>
+            <h1><strong>Biodiversity in US National Parks</strong></h1>
         </div>
     </div>
     <br>
     <!-- Paragraph -->
      
     <div class="container-fluid">
-        <div class="row">
-             <!-- break -->
-            <div class="col-md-12 text-center">
-                <p>This website explores biodiversity in the National Parks in America, using data from the National Park Service species survey in 2016. These analyses focus on the number of endangered species in each park. Note that the map page shows the location of each park in the country and the relative size of each. The circle marker sizes are not indicative of actual park size in relation to the map.</p>
+        <div class="row justify-content-center">
+            <div class="col-md-10 text-center">
+                <p><strong>This website explores biodiversity in the National Parks in America, using data from the National Park Service species survey in 2016. These analyses focus on the number of endangered species in each park.</strong></p>
             </div>
         </div>
     </div>
     <br>
     <!-- Table -->
-    <h2 class="custom-heading text-center">Top 3 States with More Endangered Species</h2>
-    <p class="custom-paragraph text-center">This table displays the number of endangered species in selected states for the years 2016 and 2024. Red numbers indicate significant changes.</p>
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>State</th>
-                <th>Year 2016</th>
-                <th>Year 2024</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>CA</td>
-                <td>67</td>
-                <td style="color:red;">74</td>
-            </tr>
-            <tr>
-                <td>HI</td>
-                <td>84</td>
-                <td>40</td>
-            </tr>
-            <tr>
-                <td>FL</td>
-                <td>33</td>
-                <td style="color:red;">35</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="custom-heading text-center">Top 3 States with the Most Endangered Species in their Parks</h2>
+            <p class="custom-paragraph text-center">This table displays the number of endangered species in selected states for the years 2016 and 2024. Red numbers indicate significant changes.</p>
+            <table class="table table-striped table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Year 2016</th>
+                        <th>Year 2024</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CA</td>
+                        <td>67</td>
+                        <td style="color:red;">74</td>
+                    </tr>
+                    <tr>
+                        <td>HI</td>
+                        <td>84</td>
+                        <td>40</td>
+                    </tr>
+                    <tr>
+                        <td>FL</td>
+                        <td>33</td>
+                        <td style="color:red;">35</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 </div>
 <div class="hero2-image">
     </div>
 </div>
+<br/>
+<br/>
     
-   
-    
-    <!-- Dashboard -->
-    <div class="container-fluid">
-        <div class="row">
-                <h1 class="custom-title text-center">Endangered Species per State</h1>
-                <div id="stack_bar_chart" class="mx-auto" style="width: 70%; height: 500px;"></div>
-                <div id="tooltip"></div>
-            </div>
+<!-- Bar Chart -->
+<div class="container-fluid">
+    <div class="row justify-content-center">
+            <h1 class="col-md-10 custom-title text-center">Endangered Species Count (in Parks) per State</h1>
+            <div id="stack_bar_chart" class="mx-auto" style="width: 70%; height: 500px;"></div>
+            <div id="tooltip"></div>
         </div>
     </div>
-    <br
+</div>
+<br/>
     
 
     <!-- Load JavaScript -->

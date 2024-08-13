@@ -9,7 +9,7 @@ function loadDataAndVisualize() {
 
 function make_bar(data) {
   // Define dimensions
-  const margin = { top: 20, right: 30, bottom: 40, left: 100 };
+  const margin = { top: 20, right: 30, bottom: 40, left: 70 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -68,10 +68,13 @@ function make_bar(data) {
     .style("font-size", "20px")
     .style("font-weight", "bold")
     .style("text-anchor", "middle")
-    .text("Total Endangered Species");
+    .text("Endangered Species Count in Parks");
 
   // Create tooltip div
-  const tooltip = d3.select("#tooltip");
+  const tooltip = d3.select("#tooltip")
+  .style("width", "300px")
+  .style("height", "50px")
+  .style("position", "absolute");
 
   // Add bars with custom colors
   svg.selectAll(".bar")
@@ -90,9 +93,14 @@ function make_bar(data) {
         .style("top", `${event.pageY - 10}px`)
         
     })
-    .on("mouseout", function() {
-        tooltip.transition().duration(400).style("opacity", 0);
-    });
+    
+    // Update mouseover event
+    .on("mouseover", function(event, d) {
+      tooltip.transition().duration(200).style("opacity", .9);
+      tooltip.html(`State: ${d.State}<br>Total Endangered Species: ${d.Total_Endangered_Species}`)
+        .style("left", `${event.pageX}px`)
+        .style("top", `${event.pageY}px`);
+});
 }
 
 // Call the function to load data and create the bar chart
