@@ -9,7 +9,7 @@ function loadDataAndVisualize() {
 
 function make_bar(data) {
   // Define dimensions
-  const margin = { top: 20, right: 30, bottom: 40, left: 40 };
+  const margin = { top: 20, right: 30, bottom: 40, left: 100 };
   const width = 960 - margin.left - margin.right;
   const height = 500 - margin.top - margin.bottom;
 
@@ -48,9 +48,9 @@ function make_bar(data) {
     .append("text")
     .attr("class", "axis-label")
     .attr("x", width / 2)
-    .attr("y", 35)
+    .attr("y", 40)
     .attr("fill", "#fff")
-    .style("font-size", "16px")
+    .style("font-size", "20px")
     .style("font-weight", "bold")
     .style("text-anchor", "middle")
     .text("State");
@@ -62,13 +62,13 @@ function make_bar(data) {
     .append("text")
     .attr("class", "axis-label")
     .attr("transform", "rotate(-90)")
-    .attr("y", -margin.left + 20)
-    .attr("x", -height / 2 - 40)
+    .attr("y", -margin.left + 20) // to move the label
+    .attr("x", -height / 3 - 90)
     .attr("fill", "#fff")
-    .style("font-size", "16px")
+    .style("font-size", "20px")
     .style("font-weight", "bold")
     .style("text-anchor", "middle")
-    // .text("Total Endangered Species");
+    .text("Total Endangered Species");
 
   // Create tooltip div
   const tooltip = d3.select("#tooltip");
@@ -86,11 +86,12 @@ function make_bar(data) {
     .on("mouseover", function(event, d) {
       tooltip.transition().duration(200).style("opacity", .9);
       tooltip.html(`State: ${d.State}<br>Total Endangered Species: ${d.Total_Endangered_Species}`)
-        .style("left", `${event.pageX + 5}px`)
-        .style("top", `${event.pageY - 28}px`);
+        .style("left", `${event.pageX + 1}px`)
+        .style("top", `${event.pageY - 10}px`)
+        
     })
     .on("mouseout", function() {
-        tooltip.transition().duration(500).style("opacity", 0);
+        tooltip.transition().duration(400).style("opacity", 0);
     });
 }
 

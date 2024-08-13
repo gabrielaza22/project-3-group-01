@@ -83,37 +83,21 @@
             <h1>Biodiversity in National Parks</h1>
         </div>
     </div>
-    
+    <br>
+    <!-- Paragraph -->
+     
     <div class="container-fluid">
         <div class="row">
+             <!-- break -->
             <div class="col-md-12 text-center">
-                <p>This website explores biodiversity in the National Parks in America, using data from the National Park Service species survey in 2016. These analyses focuses on the number of endangered species in each park. Note that the map page shows the location of each park in the country and the relative size of each. The circle marker sizes are not indicative of actual park size in relation to the map..</p>
+                <p>This website explores biodiversity in the National Parks in America, using data from the National Park Service species survey in 2016. These analyses focus on the number of endangered species in each park. Note that the map page shows the location of each park in the country and the relative size of each. The circle marker sizes are not indicative of actual park size in relation to the map.</p>
             </div>
         </div>
     </div>
-    <!-- Dashboard -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3"></div> <!-- Empty column to offset -->
-            <div class="col-md-9"> <!-- Centered column for the chart -->
-                <h1 class="text-center">Endangered Species per State</h1>
-            </div>
-            <div class="col-md-3"></div> <!-- Empty column to offset -->
-        </div>
-        <br/>
-    </div>
-        <div class="row">
-            <div class="col-md-3"></div> <!-- Empty column to offset -->
-            <div class="col-md-6 text-center"> <!-- Centered column for the chart -->
-                <div id="stack_bar_chart" style="width: 100%; height: 500px;"></div>
-                <div id="tooltip"></div>
-            </div>
-            <div class="col-md-3"></div> <!-- Empty column to offset -->
-        </div>
-    </div>
-    <!-- Tabla de Datos -->
-    <h2 class="text-center">Top 3 States with More Endangered Species</h2>
-    <p class="text-center">This table displays the number of endangered species in selected states for the years 2016 and 2024. Red numbers indicate significant changes.</p>
+    <br>
+    <!-- Table -->
+    <h2 class="custom-heading text-center">Top 3 States with More Endangered Species</h2>
+    <p class="custom-paragraph text-center">This table displays the number of endangered species in selected states for the years 2016 and 2024. Red numbers indicate significant changes.</p>
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
@@ -124,24 +108,41 @@
         </thead>
         <tbody>
             <tr>
+                <td>CA</td>
+                <td>67</td>
+                <td style="color:red;">74</td>
+            </tr>
+            <tr>
                 <td>HI</td>
                 <td>84</td>
                 <td>40</td>
             </tr>
             <tr>
-                <td>CA</td>
-                <td>67</td>
-                <td class="highlight-red">74</td>
-            </tr>
-            <tr>
                 <td>FL</td>
                 <td>33</td>
-                <td class="highlight-red">35</td>
+                <td style="color:red;">35</td>
             </tr>
         </tbody>
     </table>
 </div>
 </div>
+<div class="hero2-image">
+    </div>
+</div>
+    
+   
+    
+    <!-- Dashboard -->
+    <div class="container-fluid">
+        <div class="row">
+                <h1 class="custom-title text-center">Endangered Species per State</h1>
+                <div id="stack_bar_chart" class="mx-auto" style="width: 70%; height: 500px;"></div>
+                <div id="tooltip"></div>
+            </div>
+        </div>
+    </div>
+    <br
+    
 
     <!-- Load JavaScript -->
     <script src="./static/js/stackBar.js"></script>

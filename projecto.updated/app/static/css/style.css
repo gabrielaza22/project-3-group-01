@@ -87,7 +87,7 @@ body, html {
 background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://i.natgeofe.com/n/afed9877-feea-4292-bbc0-d049bab77277/north-cascades-national-park-picture-lake-mount-shuksan.jpg?w=2048&h=1366");
 
 /* Set a specific height */
-height: 50%;
+height: 40%;
 
 /* Position and center the image to scale nicely on all screens */
 background-position: center;
@@ -114,4 +114,32 @@ p {
 }
 .nav-link i {
   font-size: 25px;
+}
+/* The hero image */
+.hero2-image {
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("images/parks.PNG");
+  
+  /* Set a specific height */
+  height: 50%;
+  
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;}
+
+.custom-heading {
+    background-color: rgba(61, 202, 190, 0.548);
+    color: white;
+}
+
+.custom-paragraph {
+    background-color: rgba(61, 202, 190, 0.548);
+    color: whitesmoke  ;
+}
+
+.custom-title {
+  background-color: rgba(61, 202, 190, 0.548);
+  color: whitesmoke  ;
 }
