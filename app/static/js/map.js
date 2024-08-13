@@ -99,34 +99,34 @@ function createMap(data) {
 
     // Check if latitude and longitude are defined before proceeding
     if (latitude !== undefined && longitude !== undefined) {
-        // extract coordinates
-        let point = [latitude, longitude];
-        let size = row.Acres;
-        let color = circleColor(size)
+      // extract coordinates
+      let point = [latitude, longitude];
+      let size = row.Acres;
+      let color = circleColor(size)
 
-        // make marker
-        let marker = L.marker(point, {icon: treeIcon});
-        let popup = `<h4>${row["Park Name"]}</h4><hr><h4>State: ${row.State}</h4><hr><h5>Size: ${row.Acres.toLocaleString()} acres</h5>`;
-        marker.bindPopup(popup);
-        markers.addLayer(marker);
+      // make marker
+      let marker = L.marker(point); // {icon: treeIcon}
+      let popup = `<h4>${row["Park Name"]}</h4><hr><h4>State: ${row.State}</h4><hr><h5>Size: ${row.Acres.toLocaleString()} acres</h5>`;
+      marker.bindPopup(popup);
+      markers.addLayer(marker);
 
-        // add to heatmap
-        heatArray.push(point);
+      // add to heatmap
+      heatArray.push(point);
 
-        // create circle
-        let circleMarker = L.circle(point, {
-          fillOpacity: 0.5,
-          color: color,
-          fillColor: color,
-          radius: markerSize(size)
+      // create circle
+      let circleMarker = L.circle(point, {
+        fillOpacity: 0.5,
+        color: color,
+        fillColor: color,
+        radius: markerSize(size)
       }).bindPopup(popup);
 
-      circleArray.push(circleMarker);
+    circleArray.push(circleMarker);
 
     } else {
         console.log("Latitude or Longitude is undefined for row:", row);
     }
-}
+  }
 
   // Create heatmap layer
   let heatLayer = L.heatLayer(heatArray, {
@@ -145,26 +145,26 @@ function createMap(data) {
     Circles: circleLayer
   }
 
-    // Layer Control filter 
-    L.control.layers(overlayLayers).addTo(map);
+  // Layer Control filter 
+  L.control.layers(overlayLayers).addTo(map);
 
-    // Legend
-    let legend = L.control({position: "bottomright"});
-    legend.onAdd = function() {
-        let div = L.DomUtil.create("div", "info legend");
-        
+  // Legend
+  let legend = L.control({position: "bottomright"});
+  legend.onAdd = function() {
+      let div = L.DomUtil.create("div", "info legend");
+      
     let legendInfo = "<h4>Size of Park<br/>(Millions of Acres)</h4><br/>"
-        legendInfo += "<i style='background: #247A4D'></i><=1<br/>";
-        legendInfo += "<i style='background: #217048'></i>1-3<br/>";
-        legendInfo += "<i style='background: #1C6140'></i>3-5<br/>";
-        legendInfo += "<i style='background: #175238'></i>5-7<br/>";
-        legendInfo += "<i style='background: #124230'></i>7-9<br/>";
-        legendInfo += "<i style='background: #0B2C24'></i>9+";
+    legendInfo += "<i style='background: #247A4D'></i><=1<br/>";
+    legendInfo += "<i style='background: #217048'></i>1-3<br/>";
+    legendInfo += "<i style='background: #1C6140'></i>3-5<br/>";
+    legendInfo += "<i style='background: #175238'></i>5-7<br/>";
+    legendInfo += "<i style='background: #124230'></i>7-9<br/>";
+    legendInfo += "<i style='background: #0B2C24'></i>9+";
 
-        div.innerHTML = legendInfo;
-        return div;
-    };
-    legend.addTo(myMap);
+    div.innerHTML = legendInfo;
+    return div;
+  };
+  legend.addTo(myMap);
 
   // Initialize the Map
 
