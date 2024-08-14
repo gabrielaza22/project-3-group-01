@@ -181,6 +181,8 @@ class SQLHelper():
                 parks
             GROUP BY
                 Park_Name, State
+            ORDER BY
+                Acres DESC
             """
         map_df = pd.read_sql(text(map_query), con=self.engine)
         data = map_df.to_dict(orient="records")
