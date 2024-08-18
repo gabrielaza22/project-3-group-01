@@ -78,7 +78,7 @@ function make_bubble(filtered_data) {
   let bubble_x = filtered_data.map(x => x.Acres);
   let bubble_y = filtered_data.map(x => x.Endangered_Species_Count);
   let bubble_size = filtered_data.map(x => x.Endangered_Species_Count * 10);
-  let bubble_text = filtered_data.map(x => `${x.Park_Name}<br>Number of Species Endangered: ${x.Endangered_Species_Count}`);
+  let bubble_text = filtered_data.map(x => `${x.Park_Name}<br>Number of Endangered Species: ${x.Endangered_Species_Count}`);
   // Define a color scale using d3.schemeSet3
   const colorScale = d3.scaleOrdinal(d3.schemeSet3);
 
